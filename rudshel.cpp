@@ -44,7 +44,8 @@ bool _LAN10M8PCI::checkBoard( const int& baseAddress )
 	LAxFactory = (IFactory*)LAxClient.LoadRegistered(CompanyNameDRV,
 													 ProductNameDRV,
 													 VersionNameDRV,
-													 (const wchar_t *)DEVICE_NAME_DEFAULT); //,
+													 DEVICE_NAME_DEFAULT
+													 ); //,
 													 //L"StaticFactory");
 	if(LAxFactory == 0)
 	{

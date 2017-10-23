@@ -15,7 +15,7 @@
 #include <ADC_Errors.h>
 #include "tubefile.h"
 
-#define DEVICE_NAME_DEFAULT     _T("LAN10M8PCI")    	// Название драйвера
+#define DEVICE_NAME_DEFAULT     L"LAN10M8PCI"    	// Название драйвера
 //#define BASE_ADDRESS_DEFAULT    1	           			// Адрес платы
 #define DRQ_NUMBER_DEFAULT      1               		// Номер канала ПДП
 #define IRQ_NUMBER_DEFAULT      DRQ_NUMBER_DEFAULT    	// Номер прерывания

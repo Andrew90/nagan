@@ -1,0 +1,15 @@
+#ifndef CompanyNameDACDRV
+#define CompanyNameDACDRV "Virtual Tools LTD"
+#endif
+
+#ifndef ProductNameDACDRV
+#define ProductNameDACDRV "DACDrivers"
+#endif
+
+#ifndef VersionNameDACDRV
+#define VersionNameDACDRV "1.0"
+#endif
+
+#ifndef KEY_PATH_DACDRV
+#define KEY_PATH_DACDRV CompanyNameDACDRV "\\" ProductNameDACDRV "\\" VersionNameDACDRV
+#endif

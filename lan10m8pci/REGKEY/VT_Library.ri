@@ -1,0 +1,15 @@
+#ifndef CompanyName
+  #define CompanyName "Virtual Tools LTD"
+#endif
+
+#ifndef ProductName 
+  #define ProductName "Base library"
+#endif
+
+#ifndef VersionName
+  #define VersionName "1.0"
+#endif
+
+#ifndef KEY_PATH
+  #define KEY_PATH CompanyName "\\" ProductName "\\" VersionName 
+#endif

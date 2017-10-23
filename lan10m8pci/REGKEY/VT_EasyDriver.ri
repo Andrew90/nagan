@@ -1,0 +1,17 @@
+#ifndef CompanyNameEASYDRV
+  #define CompanyNameEASYDRV "Virtual Tools LTD"
+#endif
+
+#ifndef ProductNameEASYDRV_ADC
+  #define ProductNameEASYDRV_ADC  "EasyDriversADC"
+#endif
+#ifndef ProductNameEASYDRV_DAC
+  #define ProductNameEASYDRV_DAC  "EasyDriversDAC"
+#endif
+#ifndef ProductNameEASYDRV_PORT
+  #define ProductNameEASYDRV_PORT "EasyDriversPORT"
+#endif
+
+#ifndef VersionNameEASYDRV
+  #define VersionNameEASYDRV "1.0"
+#endif

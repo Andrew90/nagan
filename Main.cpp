@@ -14,6 +14,8 @@
 
 #include <vector.h>
 
+#include "rtube.h"
+
 // ---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -521,8 +523,7 @@ void __fastcall TMainForm::bTestClick(TObject *Sender)
 
 void __fastcall TMainForm::bViewClick(TObject *Sender)
 {
-	if (Globals::isView)
-		ViewForm->Show();
+	if (Globals::isView) ViewForm->Show();
 }
 // ------------------------------------------------------------------------------
 
@@ -767,12 +768,104 @@ void __fastcall TMainForm::menuSaveTubeClick(TObject *Sender)
    //	if (SaveToFileDialog->Execute())
 	 //	if ( Globals::rtube.saveToFile( SaveToFileDialog->FileName ) );
 	   //		StatusBarTop->Panels->Items[2]->Text = L"Данные успешно сохранены";
+
+		if (SaveToFileDialog->Execute())
+		{
+
+		FILE *f = _wfopen(SaveToFileDialog->FileName.c_str(), L"wb");
+		if(NULL != f)
+		{
+			int countZones = Globals::rtube.rawData.size();
+			fwrite(&countZones, sizeof(countZones), 1, f);
+
+			int measureSize = Globals::adcSettings.measureSize;;
+			fwrite(&measureSize, sizeof(measureSize), 1, f);
+
+			for(int zone = 0; zone < countZones; ++zone)
+			{
+			   for(int sens = 0; sens < 6; ++sens)
+			   {
+				   int countSamples = Globals::rtube.rawData[zone][sens].size();
+				   fwrite(&countSamples, 1, sizeof(countSamples), f);
+			   }
+			}
+
+			for(int zone = 0; zone < countZones; ++zone)
+			{
+			   for(int sens = 0; sens < 6; ++sens)
+			   {
+				   int countSamples = Globals::rtube.rawData[zone][sens].size();
+				   for(int samples = 0; samples < countSamples; ++samples)
+				   {
+					 fwrite(&Globals::rtube.rawData[zone][sens][samples].data[0], sizeof(sample_t), measureSize, f);
+				   }
+			   }
+			}
+
+			fclose(f);
+			StatusBarTop->Panels->Items[2]->Text = L"Данные успешно сохранены";
+		}
+		}
 }
 
 // ------------------------------------------------------------------------------------
 
 void __fastcall TMainForm::menuLoadTubeClick(TObject *Sender)
 {
+#undef TEST__LOAD
+#ifndef TEST__LOAD
+if (OpenDialogFromFile->Execute())
+		{
+		FILE *f = _wfopen(OpenDialogFromFile->FileName.c_str(), L"rb");
+		if(NULL != f)
+		{
+			Globals::rtube.rawData.clear();
+			Globals::rtube.finalThickness.clear();
+			Globals::rtube.finalPerSensor.clear();
+			int countZones = 0;
+			fread(&countZones, sizeof(countZones), 1, f);
+			Globals::rtube.rawData.resize(countZones);
+			Globals::rtube.finalThickness.resize(countZones);
+			Globals::rtube.finalPerSensor.resize(countZones);
+
+			int measureSize = 0;
+			fread(&measureSize, sizeof(measureSize), 1, f);
+
+			for(int zone = 0; zone < countZones; ++zone)
+			{
+				Globals::rtube.rawData[zone].resize(6);
+				Globals::rtube.finalPerSensor[zone].resize(6);
+			   for(int sens = 0; sens < 6; ++sens)
+			   {
+				   int countSamples = 0;
+				   fread(&countSamples, 1, sizeof(countSamples), f);
+				   Globals::rtube.rawData[zone][sens].resize(countSamples);
+			   }
+			}
+
+			for(int zone = 0; zone < countZones; ++zone)
+			{
+			   for(int sens = 0; sens < 6; ++sens)
+			   {
+				   int countSamples = Globals::rtube.rawData[zone][sens].size();
+				   for(int samples = 0; samples < countSamples; ++samples)
+				   {
+				   Globals::rtube.rawData[zone][sens][samples].data.resize(measureSize);
+				   fread(&Globals::rtube.rawData[zone][sens][samples].data[0], sizeof(sample_t), measureSize, f);
+				   }
+			   }
+			}
+
+			fclose(f);
+			MainForm->Caption = "Модуль толщинометрии. Загружен файл: \"" + OpenDialogFromFile->FileName +"\"";
+				Globals::rtube.RecalculateTube(  );
+
+	 Globals::rtube.finish();
+		Globals::rtube.setTest(true);
+		Globals::isView = true;
+		}
+		}
+#endif
 /*	using namespace thickness;
 	if (OpenDialogFromFile->Execute())
 	{
@@ -802,22 +895,39 @@ void __fastcall TMainForm::menuLoadTubeClick(TObject *Sender)
 		}
 	}
 */
-/////test////
-for(int z = 0; z < 50; ++z)
+//////test////
+#ifdef TEST__LOAD
+Globals::isView = true;
+std::vector< sample_t > v[6];
+double dw = 1.0 / 484;
+for(int k = 0; k < 6; ++k)
+for(int i = 0; i < 484; ++i)
 {
-  for(int d = 0; d < 3; ++d)
-  {
-  for(int o = 0; o < 100; ++o)
-  {
-	  RMeasure *t = new RMeasure;
-      Globals::rtube.rawData[z][d][o] = t;
-  }
-
-  }
-
+	v[k].push_back(Sin(5.0 * dw * i * (1 + k)) * 128);
 }
 
+  Globals::rtube.rawData.resize(50);
+   Globals::rtube.finalThickness.resize(50);
+	Globals::rtube.finalPerSensor.resize(50);
+
+  for(int z = 0; z < 50; ++z)
+  {
+	Globals::rtube.rawData[z].resize(6);
+	  Globals::rtube.finalPerSensor[z].resize(6);
+	for(int d = 0; d < 6; ++d)
+	{
+	RThickness::RMeasure m(v[d]);
+	  for(int o = 0; o < 100; ++o)
+	  {
+		Globals::rtube.rawData[z][d].push_back(m);
+	  }
+	}
+  }
+
 	Globals::rtube.RecalculateTube(  );
+	Globals::rtube.setTest(true);
+	 Globals::rtube.finish();
+#endif
 //////////////////////////test///////////////////////
 }
 // ---------------------------------------------------------------------------
@@ -1002,9 +1112,10 @@ void TMainForm::PutSummaryResultOnChart(std::vector<double> thickness )
 	( (TBarSeries *) ThicknessChart->Series[0])->SideMargins=true;
 	ThicknessChart->Series[0]->Clear();
 //	ProtocolForm->SendToProtocol("Перед отрисовкой по зонам. ");
+int size = thickness.size();
 	for (int i = 0; i < Globals::max_zones; i++)
 	{
-		if ( i < thickness.size() )
+		if ( i < size)//thickness.size() )
 		{
 			volatile int sh = thickness[i];
 			double thick = thickness[i];

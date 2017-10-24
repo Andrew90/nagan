@@ -95,7 +95,9 @@ private:
 	bool Globals::isView = false;
 	String Globals::IniFileName = "..\\..\\Settings\\SettingsThickness.ini";
 	String Globals::SignalsFileName = "..\\..\\Settings\\IO_Management.ini";
+
 	RThickness::RTube Globals::rtube = RThickness::RTube();
+
 	acquireSettings Globals::adcSettings = acquireSettings();
 	User Globals::user = User();
 	Typesize Globals::typesize = Typesize();

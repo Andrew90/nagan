@@ -58,7 +58,7 @@ namespace RThickness
 	class RMeasure
 	{
 		public:
-			RMeasure();
+			RMeasure(){}
 			RMeasure( const size_t& N );
 			RMeasure( const std::vector< sample_t >& Data );
 
@@ -73,8 +73,10 @@ namespace RThickness
 			std::vector< sample_t >		Mixed( const int32_t& offset );
 
 		protected:
+		public:
 			//! исходный массив отсчётов АЦП
 			std::vector< sample_t > 	data;
+		protected:
 			//! огибающая автокорреляционной функции (АКФ)
 			std::vector< double >       acf;
 			//! обнаруженные максимумы АКФ
@@ -173,6 +175,7 @@ namespace RThickness
 			//! <b>Собранные измерения по всей трубе</b>
 			//! <p>адресация происходит следующим образом:</p>
 			//! <p><i>rawData[Номер зоны][Номер датчика][Номер измерения в зоне]</i></p>
+public:
 			std::deque< std::deque< std::deque< RMeasure > > >	rawData;
 			// выбранная после медианной фильтрации толщина по каждой зоне
 			// каждого датчика	finalPerSensor[Зона][Датчик]

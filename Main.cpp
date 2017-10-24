@@ -803,7 +803,21 @@ void __fastcall TMainForm::menuLoadTubeClick(TObject *Sender)
 	}
 */
 /////test////
-_LAN10M8PCI &b = Globals::adcBoards;
+for(int z = 0; z < 50; ++z)
+{
+  for(int d = 0; d < 3; ++d)
+  {
+  for(int o = 0; o < 100; ++o)
+  {
+	  RMeasure *t = new RMeasure;
+      Globals::rtube.rawData[z][d][o] = t;
+  }
+
+  }
+
+}
+
+	Globals::rtube.RecalculateTube(  );
 //////////////////////////test///////////////////////
 }
 // ---------------------------------------------------------------------------

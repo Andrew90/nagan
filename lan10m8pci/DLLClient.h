@@ -16,7 +16,7 @@ private:
     HMODULE m_hLib;
 
 public:
-    DllClient()
+	DllClient()
     {
         m_hLib = 0;
         m_pStaticResident = 0;
@@ -27,28 +27,28 @@ void*   LoadByPath(TCHAR const* szPath, char const* szExportName)
     Free();
 
     if(szPath == 0 || szExportName == 0) 
-        return 0;
-    m_hLib = HMODULE(::LoadLibrary(szPath));
+		return 0;
+	m_hLib = HMODULE(::LoadLibrary(szPath));
     if(m_hLib == 0) 
         return 0;
-    return m_pStaticResident = (void*)::GetProcAddress(m_hLib, szExportName);
+	return m_pStaticResident = (void*)::GetProcAddress(m_hLib, szExportName);
 }
 /*----------------------------------------------------------------------*/
 #pragma warning(disable : 4996)
 void*   LoadRegistered(TCHAR const* szCompanyName,
                        TCHAR const* szProductName,
                        TCHAR const* szVersionName,
-                       TCHAR const* szModuleName,
-                       char  const* szExportName = "StaticFactory")
+					   TCHAR const* szModuleName,
+					   TCHAR  const* szExportName = L"StaticFactory")
 {
-    Free();
+	Free();
 
     TCHAR szPath[256];
 #if 0
     GetCurrentDirectory(sizeof(szPath), szPath);
     TstrADD(szPath, szModuleName);
     _tcscat(szPath, _T(".DLL"));
-    void* plib = LoadByPath(szPath, szExportName);
+	void* plib = LoadByPath(szPath, szExportName);
     if(plib != 0)
         return plib;
 #endif
@@ -64,10 +64,12 @@ void*   LoadRegistered(TCHAR const* szCompanyName,
     unsigned long dwType, dwSize = sizeof(szPath)/sizeof(TCHAR);
     r = ::RegQueryValueEx(hKeyModule, _T("path"), 0, &dwType, 
                           (unsigned char*)szPath, &dwSize);
-    ::RegCloseKey(hKeyModule);
-    if(r != ERROR_SUCCESS || dwType != REG_SZ) 
-        return 0;
-    return LoadByPath(szPath, szExportName);
+	::RegCloseKey(hKeyModule);
+	if(r != ERROR_SUCCESS || dwType != REG_SZ)
+		return 0;
+	char ex[256];
+	WideCharToMultiByte(CP_ACP, 0, szExportName, -1, ex, wcslen(szExportName), NULL, NULL);
+	return LoadByPath(szPath, ex);//szExportName);
 }
 /*----------------------------------------------------------------------*/
 void    Free()
@@ -81,7 +83,7 @@ void    Free()
 }
 /*----------------------------------------------------------------------*/
 static TCHAR*  GetRegName(TCHAR* data, int size, int index,
-                   TCHAR const* szCompanyName,
+				   TCHAR const* szCompanyName,
                    TCHAR const* szProductName,
                    TCHAR const* szVersionName)
 {
@@ -140,9 +142,9 @@ void*   LoadDriver(TCHAR* szModuleName,
     IFactory* pFactory;
     if(szInterfaceName == 0) 
         szInterfaceName = _T("IADCDevice");
-    pFactory = (IFactory*)LoadRegistered(_T(CompanyNameDRV),
-                                         _T(ProductNameDRV),
-                                         _T(VersionNameDRV),
+	pFactory = (IFactory*)LoadRegistered(CompanyNameDRV,
+										 ProductNameDRV,
+										 VersionNameDRV,
                                          szModuleName);
     return (pFactory) ? pFactory->Create(szInterfaceName, lpParam) : 0;
 }
@@ -152,7 +154,7 @@ void*   LoadLibrary(TCHAR* szModuleName,
                     void*  lpParam = 0)
 {
     IFactory* pFactory;
-    pFactory = (IFactory*)LoadRegistered(_T(CompanyName),
+	pFactory = (IFactory*)LoadRegistered(_T(CompanyName),
                                          _T(ProductName),
                                          _T(VersionName),
                                          szModuleName);

@@ -1,4 +1,4 @@
-#ifndef __ADC_ERRORS_H__
+п»ї#ifndef __ADC_ERRORS_H__
 #define __ADC_ERRORS_H__
 /* ####################################################################### */
 #include "adc_const.h"
@@ -8,31 +8,32 @@
 #define DIM(__x) (sizeof(__x)/sizeof(__x[0]))
 #endif
 /* ----------------------------------------------------------------------- */
+;
 typedef struct _ADCError
 {
-    int         m_nErrorCode;    // код ошибки
-    char*       m_nErrorStr;     // расшифровка
+    int         m_nErrorCode;    // РєРѕРґ РѕС€РёР±РєРё
+    char*       m_nErrorStr;     // СЂР°СЃС€РёС„СЂРѕРІРєР°
 } ADCError, *PADCError;
 /* ----------------------------------------------------------------------- */
 const _ADCError  ADCErrorStrings[] =
-    { ADC_ERROR_NOTSUPPORTED,        "Функция не поддерживается",
-      ADC_ERROR_NOTINITIALIZE,       "Драйвер не инициализирован (не указан базовый адрес)",
-      ADC_ERROR_INVALIDPARAMETERS,   "Недопустимые значения параметров",
-      ADC_ERROR_INVALIDBASE,         "Недопустимый базовый адрес",
-      ADC_ERROR_INVALIDIRQ,          "Недопустимый номер IRQ",
-      ADC_ERROR_INVALIDDRQ,          "Недопустимый номер DRQ",
-      ADC_ERROR_DRQ_ALLREADY_USED,   "Запрашиваемый DRQ занят",
-      ADC_ERROR_IRQ_ALLREADY_USED,   "Запрашиваемый IRQ занят",
-      ADC_ERROR_VXD_NOTLOADED,       "Нет необходимого драйвера",
-      ADC_ERROR_VXD_INVALIDVERSION,  "Драйвер есть, но неправильной версии",
-      ADC_ERROR_LOADXILINX,          "Не удалось загрузить ПЛИС",
-      ADC_ERROR_DRQ_NOTSETUP,        "Не заданы параметры измерения",
-      ADC_ERROR_NO_CONFIG_INFO,      "Драйвер не сконфигурирован",
-      ADC_ERROR_CANTLOADXILINXFILES, "Не удалось загрузить файл конфигурации ПЛИС",
-      ADC_ERROR_LOAD_ADSP,           "Не удалось загрузить программу в ADSP процессор",
-      ADC_ERROR_LOAD_ADSP_FILE,      "Плохой или отсутствует файл с программой для ADSP процессора",
-      1,                             "Всё функциклирует замечательно!",
-      ADC_ERROR_INVALIDERRORCODE,    "Не определённый код ошибки"};
+    { ADC_ERROR_NOTSUPPORTED,        "Р¤СѓРЅРєС†РёСЏ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚СЃСЏ",
+      ADC_ERROR_NOTINITIALIZE,       "Р”СЂР°Р№РІРµСЂ РЅРµ РёРЅРёС†РёР°Р»РёР·РёСЂРѕРІР°РЅ (РЅРµ СѓРєР°Р·Р°РЅ Р±Р°Р·РѕРІС‹Р№ Р°РґСЂРµСЃ)",
+      ADC_ERROR_INVALIDPARAMETERS,   "РќРµРґРѕРїСѓСЃС‚РёРјС‹Рµ Р·РЅР°С‡РµРЅРёСЏ РїР°СЂР°РјРµС‚СЂРѕРІ",
+      ADC_ERROR_INVALIDBASE,         "РќРµРґРѕРїСѓСЃС‚РёРјС‹Р№ Р±Р°Р·РѕРІС‹Р№ Р°РґСЂРµСЃ",
+      ADC_ERROR_INVALIDIRQ,          "РќРµРґРѕРїСѓСЃС‚РёРјС‹Р№ РЅРѕРјРµСЂ IRQ",
+      ADC_ERROR_INVALIDDRQ,          "РќРµРґРѕРїСѓСЃС‚РёРјС‹Р№ РЅРѕРјРµСЂ DRQ",
+      ADC_ERROR_DRQ_ALLREADY_USED,   "Р—Р°РїСЂР°С€РёРІР°РµРјС‹Р№ DRQ Р·Р°РЅСЏС‚",
+      ADC_ERROR_IRQ_ALLREADY_USED,   "Р—Р°РїСЂР°С€РёРІР°РµРјС‹Р№ IRQ Р·Р°РЅСЏС‚",
+      ADC_ERROR_VXD_NOTLOADED,       "РќРµС‚ РЅРµРѕР±С…РѕРґРёРјРѕРіРѕ РґСЂР°Р№РІРµСЂР°",
+      ADC_ERROR_VXD_INVALIDVERSION,  "Р”СЂР°Р№РІРµСЂ РµСЃС‚СЊ, РЅРѕ РЅРµРїСЂР°РІРёР»СЊРЅРѕР№ РІРµСЂСЃРёРё",
+      ADC_ERROR_LOADXILINX,          "РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ РџР›РРЎ",
+      ADC_ERROR_DRQ_NOTSETUP,        "РќРµ Р·Р°РґР°РЅС‹ РїР°СЂР°РјРµС‚СЂС‹ РёР·РјРµСЂРµРЅРёСЏ",
+      ADC_ERROR_NO_CONFIG_INFO,      "Р”СЂР°Р№РІРµСЂ РЅРµ СЃРєРѕРЅС„РёРіСѓСЂРёСЂРѕРІР°РЅ",
+      ADC_ERROR_CANTLOADXILINXFILES, "РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ С„Р°Р№Р» РєРѕРЅС„РёРіСѓСЂР°С†РёРё РџР›РРЎ",
+      ADC_ERROR_LOAD_ADSP,           "РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ РїСЂРѕРіСЂР°РјРјСѓ РІ ADSP РїСЂРѕС†РµСЃСЃРѕСЂ",
+      ADC_ERROR_LOAD_ADSP_FILE,      "РџР»РѕС…РѕР№ РёР»Рё РѕС‚СЃСѓС‚СЃС‚РІСѓРµС‚ С„Р°Р№Р» СЃ РїСЂРѕРіСЂР°РјРјРѕР№ РґР»СЏ ADSP РїСЂРѕС†РµСЃСЃРѕСЂР°",
+      1,                             "Р’СЃС‘ С„СѓРЅРєС†РёРєР»РёСЂСѓРµС‚ Р·Р°РјРµС‡Р°С‚РµР»СЊРЅРѕ!",
+      ADC_ERROR_INVALIDERRORCODE,    "РќРµ РѕРїСЂРµРґРµР»С‘РЅРЅС‹Р№ РєРѕРґ РѕС€РёР±РєРё"};
 
 const _ADCError  ADCErrorStringsEng[] =
     { ADC_ERROR_NOTSUPPORTED,        "Function is not supported",

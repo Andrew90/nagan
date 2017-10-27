@@ -147,7 +147,10 @@ namespace RThickness
 
 			std::map< th_status, uint32_t >		getComputeStats()
 												{ return computeStats; }
-			String getDecisionString (th_status status)	{ return thCodeToString [ status ]; }
+			String getDecisionString (th_status status)
+			{
+			return thCodeToString [ status ];
+			}
 
 			thickness::MathSettings getMathSettings() { return mathSettings; }
 			void setMathSettings( const thickness::MathSettings& Ms );

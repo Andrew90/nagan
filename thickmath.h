@@ -39,13 +39,13 @@ void find_peaks( const double y[], const int32_t Ny,
 				 int32_t x_peaks[], double y_peaks[], int32_t *Npeaks );
 
 enum th_status {
-	TH_OK 					= 0,	// толщина стенки определена
-	TH_EXTREMUMS_NOT_FOUND	= 1,    // экстремумы АКФ не обнаружены
-	TH_GREATER_THAN_MAX 	= 2,   	// первый пик дальше maxThickness
-	TH_LESS_THAN_MIN 		= 3,	// первый пик ближе minThickness
-	TH_NOT_ENOUGH_INFO 		= 4, 	// недостаточно данных для анализа
-	TH_BIG_DIFFERENCE		= 5,
-	TH_LESS_SIGNAL          = 6
+	TH_OK 					,	// толщина стенки определена
+	TH_EXTREMUMS_NOT_FOUND	,    // экстремумы АКФ не обнаружены
+	TH_GREATER_THAN_MAX 	,   	// первый пик дальше maxThickness
+	TH_LESS_THAN_MIN 		,	// первый пик ближе minThickness
+	//TH_NOT_ENOUGH_INFO 		, 	// недостаточно данных для анализа
+   //	TH_BIG_DIFFERENCE		= 5,
+	TH_LESS_SIGNAL
 };
 
 

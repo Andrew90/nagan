@@ -189,8 +189,8 @@ RTube::RTube()
 	computeStats[ TH_EXTREMUMS_NOT_FOUND ] 	= 0;
 	computeStats[ TH_GREATER_THAN_MAX ] 	= 0;
 	computeStats[ TH_LESS_THAN_MIN ] 		= 0;
-	computeStats[ TH_NOT_ENOUGH_INFO ] 		= 0;
-	computeStats[ TH_BIG_DIFFERENCE ]		= 0;
+	//computeStats[ TH_NOT_ENOUGH_INFO ] 		= 0;
+  //	computeStats[ TH_BIG_DIFFERENCE ]		= 0;
 	computeStats[ TH_LESS_SIGNAL ]		= 0;
 
 	// инициализируем карту "заключение - строка"
@@ -200,8 +200,8 @@ RTube::RTube()
 	//"ѕервый пик дальше верхней границы";
 	thCodeToString[ TH_LESS_THAN_MIN ] 			= "Ёнерги€ меньше порогового значени€";
 	//"ѕервый пик ближе нижней границы";
-	thCodeToString[ TH_NOT_ENOUGH_INFO ] 		= "Ќедостаточно данных дл€ рассчета";
-	thCodeToString[ TH_BIG_DIFFERENCE ]			= "–азница между пиками больше погрешности";
+  //	thCodeToString[ TH_NOT_ENOUGH_INFO ] 		= "Ќедостаточно данных дл€ рассчета";
+   //	thCodeToString[ TH_BIG_DIFFERENCE ]			= "–азница между пиками больше погрешности";
 	thCodeToString[TH_LESS_SIGNAL     ] = "—игнал меньше порогового значени€";
 
 	mathSettings = thickness::MathSettings( measureSettings.sensorCount );
@@ -257,8 +257,8 @@ void RTube::eraseAllData()
 	computeStats[ TH_EXTREMUMS_NOT_FOUND ] 	= 0;
 	computeStats[ TH_GREATER_THAN_MAX ] 	= 0;
 	computeStats[ TH_LESS_THAN_MIN ] 		= 0;
-	computeStats[ TH_NOT_ENOUGH_INFO ] 		= 0;
-	computeStats[ TH_BIG_DIFFERENCE ]		= 0;
+   //	computeStats[ TH_NOT_ENOUGH_INFO ] 		= 0;
+   //	computeStats[ TH_BIG_DIFFERENCE ]		= 0;
 	computeStats[ TH_LESS_SIGNAL ]		= 0;
 }
 
@@ -585,7 +585,7 @@ void __fastcall TubeSolver::doBasicAnalysis( const uint32_t& task )
                     {
 						measure->optOffset  = 0;
 						measure->thCode  = TH_BIG_DIFFERENCE;
-                        target->computeStats[ TH_BIG_DIFFERENCE ]++;
+						target->computeStats[ TH_BIG_DIFFERENCE ]++;
                     }
 				}
                 else
@@ -593,7 +593,7 @@ void __fastcall TubeSolver::doBasicAnalysis( const uint32_t& task )
 			}
 #else
 th_status &status = measure->thCode;
-status = TH_NOT_ENOUGH_INFO;//PrimaryData::Undefined;
+status = TH_OK;//TH_NOT_ENOUGH_INFO;//PrimaryData::Undefined;
 
 double &result = measure->thickness;
 result = Globals::rtube.getMathSettings().MaxThickness();//target->mathSettings.nominThickness;
@@ -601,10 +601,12 @@ result = Globals::rtube.getMathSettings().MaxThickness();//target->mathSettings.
 if(data[0] < target->mathSettings.minEnergy[sensorNo])
 {
 status = TH_LESS_THAN_MIN;        //'энерги€ меньше порогового значени€
+target->computeStats[ TH_LESS_THAN_MIN]++;
 }
 else if(data[0] > target->mathSettings.maxEnergy[sensorNo])
 {
 status = TH_GREATER_THAN_MAX;   //'энерги€ больше порогового значени€
+target->computeStats[ TH_GREATER_THAN_MAX]++;
 }
 else
 {
@@ -653,6 +655,7 @@ int maxOffs = int(target->mathSettings.maxThickness
 	//peak[sensorIndex])
 	{
 		 status = TH_LESS_SIGNAL;//PrimaryData::ValueLessThreshold;//меньше допустимого порога
+		 target->computeStats[ TH_LESS_SIGNAL]++;
 	}
 	else
 	{
@@ -683,12 +686,16 @@ int maxOffs = int(target->mathSettings.maxThickness
 		  result *= target->mathSettings.calibCoeffs[sensorNo].a;
 			result += target->mathSettings.calibCoeffs[sensorNo].b;
 		status = TH_OK;
+		target->computeStats[ TH_OK]++;
 		}
 		else
 		{
 		 status = TH_EXTREMUMS_NOT_FOUND;
+		  target->computeStats[ TH_EXTREMUMS_NOT_FOUND]++;
 		}
+		 //	if(status == TH_NOT_ENOUGH_INFO) target->computeStats[ TH_NOT_ENOUGH_INFO]++;
 	}
+
  }
 #endif
 		}
@@ -745,6 +752,7 @@ int maxOffs = int(target->mathSettings.maxThickness
 	target->finalThickness[ task ] = *finalDecision;
 	volatile double dd = *finalDecision;    //что за фигн€?
 	target->taskLock->Release();
+
 }
 //---------------------------------------------------------------------------
 

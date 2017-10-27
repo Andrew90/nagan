@@ -778,7 +778,7 @@ void __fastcall TMainForm::menuSaveTubeClick(TObject *Sender)
 			int countZones = Globals::rtube.rawData.size();
 			fwrite(&countZones, sizeof(countZones), 1, f);
 
-			int measureSize = Globals::adcSettings.measureSize;;
+			int measureSize = Globals::adcSettings.measureSize;
 			fwrite(&measureSize, sizeof(measureSize), 1, f);
 
 			for(int zone = 0; zone < countZones; ++zone)
@@ -858,6 +858,7 @@ if (OpenDialogFromFile->Execute())
 
 			fclose(f);
 			MainForm->Caption = "Модуль толщинометрии. Загружен файл: \"" + OpenDialogFromFile->FileName +"\"";
+			 Globals::rtube.fft.Init(Globals::adcBoards[0].packetSize);
 				Globals::rtube.RecalculateTube(  );
 
 	 Globals::rtube.finish();

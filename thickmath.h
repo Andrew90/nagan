@@ -44,7 +44,8 @@ enum th_status {
 	TH_GREATER_THAN_MAX 	= 2,   	// первый пик дальше maxThickness
 	TH_LESS_THAN_MIN 		= 3,	// первый пик ближе minThickness
 	TH_NOT_ENOUGH_INFO 		= 4, 	// недостаточно данных для анализа
-	TH_BIG_DIFFERENCE		= 5
+	TH_BIG_DIFFERENCE		= 5,
+	TH_LESS_SIGNAL          = 6
 };
 
 

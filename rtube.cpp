@@ -191,6 +191,7 @@ RTube::RTube()
 	computeStats[ TH_LESS_THAN_MIN ] 		= 0;
 	computeStats[ TH_NOT_ENOUGH_INFO ] 		= 0;
 	computeStats[ TH_BIG_DIFFERENCE ]		= 0;
+	computeStats[ TH_LESS_SIGNAL ]		= 0;
 
 	// инициализируем карту "заключение - строка"
 	thCodeToString[ TH_OK ] 					= "–ассчитано";
@@ -201,6 +202,7 @@ RTube::RTube()
 	//"ѕервый пик ближе нижней границы";
 	thCodeToString[ TH_NOT_ENOUGH_INFO ] 		= "Ќедостаточно данных дл€ рассчета";
 	thCodeToString[ TH_BIG_DIFFERENCE ]			= "–азница между пиками больше погрешности";
+	thCodeToString[TH_LESS_SIGNAL     ] = "—игнал меньше порогового значени€";
 
 	mathSettings = thickness::MathSettings( measureSettings.sensorCount );
 
@@ -257,6 +259,7 @@ void RTube::eraseAllData()
 	computeStats[ TH_LESS_THAN_MIN ] 		= 0;
 	computeStats[ TH_NOT_ENOUGH_INFO ] 		= 0;
 	computeStats[ TH_BIG_DIFFERENCE ]		= 0;
+	computeStats[ TH_LESS_SIGNAL ]		= 0;
 }
 
 std::vector<double> 	RTube::evalTubePerSensor ( const int &SensorNo )
@@ -649,7 +652,7 @@ int maxOffs = int(target->mathSettings.maxThickness
 	if(val < data[0] * target->mathSettings.firstPeakPerEnergy[sensorNo])
 	//peak[sensorIndex])
 	{
-		 status = TH_GREATER_THAN_MAX;//PrimaryData::ValueLessThreshold;//меньше допустимого порога
+		 status = TH_LESS_SIGNAL;//PrimaryData::ValueLessThreshold;//меньше допустимого порога
 	}
 	else
 	{
